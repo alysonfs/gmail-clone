@@ -2,7 +2,7 @@ import React from 'react';
 import './Home.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { selectSendMessageIsOpen } from '../../features/mailSlice'
+import { selectSendMessageIsOpen } from '../../app/features/mailSlice'
 import Header from '../../Components/Header';
 import Sidebar from '../../Components/Sidebar'
 import Mail from '../Mail';

@@ -1,7 +1,7 @@
 import React from 'react'
 import './SendMail.css'
 import { useDispatch } from 'react-redux'
-import { closeSendMessage } from '../../features/mailSlice'
+import { closeSendMessage } from '../../app/features/mailSlice'
 import { db, collection, addDoc, serverTimestamp} from '../../app/firebase'
 
 import { Close } from '@mui/icons-material'

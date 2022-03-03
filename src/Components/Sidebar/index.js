@@ -1,7 +1,7 @@
 import React from 'react'
 import './Sidebar.css'
 import { useDispatch } from 'react-redux'
-import { openSendMessage } from '../../features/mailSlice'
+import { openSendMessage } from '../../app/features/mailSlice'
 import SidebarOption from '../SidebarOption'
 import {
   AccessTime, Add, Duo, ExpandMore, Inbox,
