@@ -1,5 +1,7 @@
 import React from 'react'
 import './Mail.css'
+import { useSelector } from 'react-redux'
+import { selectOpenMail } from '../../app/features/mailSlice'
 
 import {
   ArrowBack, CheckCircle, Delete,
@@ -9,9 +11,9 @@ import {
 import { IconButton } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
-
 function Mail () {
   let navigate = useNavigate()
+  let selectedMail = useSelector(selectOpenMail)
 
   return (
     <div className="mail">
@@ -38,13 +40,17 @@ function Mail () {
       </div>
       <div className="mail__body">
         <div className="mail__body-header">
-          <h2>Subject</h2>
-          <LabelImportant className='mail__body-icon-important'/>
-          <p>Title</p>
-          <p className='mail__body-time'>10pm</p>
+          <h2>{selectedMail?.subject}</h2>
+          <LabelImportant className='mail__body-icon-important' />
+          <p>{selectedMail?.title}</p>
+          <p className='mail__body-time'>
+            {selectedMail?.time}
+          </p>
         </div>
         <div className="mail__body-message">
-          <p>This message</p>
+          <p>
+            {selectedMail?.description}
+          </p>
         </div>
       </div>
     </div>
