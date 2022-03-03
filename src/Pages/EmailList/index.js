@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './EmailList.css'
 import { Checkbox, IconButton } from '@mui/material'
 import {
@@ -7,8 +7,23 @@ import {
 } from '@mui/icons-material'
 import Section from '../../Components/Section'
 import EmailRow from '../../Components/EmailRow'
+import { db, collection, query, orderBy, getDocs } from '../../app/firebase'
 
 function EmailList () {
+  const [emails, setEmails] = useState([])
+  const emailRef = collection(db, 'emails')
+  const q = query(emailRef, orderBy('timestamp', 'desc'))
+
+  useEffect(() => {
+    getDocs(q)
+      .then(({ docs }) => {
+        setEmails(docs.map(doc => ({
+          id: doc.id,
+          data: doc.data()
+        })))
+      })
+  }, [])
+
   return (
     <div className="email-list">
       <div className="email-list__settings">
@@ -45,16 +60,17 @@ function EmailList () {
         <Section Icon={LocalOffer} title={'Promotions'} color={'green'} />
       </div>
       <div className="email-list__list">
-        <EmailRow
-          title={'Twitch'}
-          subject={'Hey fellow streamer!!'}
-          description={'This is a test'}
-          time={'10PM'} />
-        <EmailRow
-          title={'Twitch'}
-          subject={'Hey fellow streamer!!'}
-          description={'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature'}
-          time={'10PM'} />
+        {emails &&
+          emails.map(({ id, data: { to, subject, message, timestamp } }) =>
+            <EmailRow
+              key={id}
+              id={id}
+              title={to}
+              subject={subject}
+              description={message}
+              time={new Date(timestamp?.seconds * 1000).toUTCString()} />
+          )
+        }
       </div>
     </div>
   )

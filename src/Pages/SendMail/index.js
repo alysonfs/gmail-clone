@@ -2,6 +2,7 @@ import React from 'react'
 import './SendMail.css'
 import { useDispatch } from 'react-redux'
 import { closeSendMessage } from '../../features/mailSlice'
+import { db, collection, addDoc, serverTimestamp} from '../../app/firebase'
 
 import { Close } from '@mui/icons-material'
 import { Button } from '@mui/material'
@@ -12,7 +13,16 @@ function SendMail () {
   const dispatch = useDispatch()
 
   const onSubmit = (formData) => {
-    console.log(formData, errors)
+    addDoc(collection(db, 'emails'), {
+      to: formData.to,
+      subject: formData.subject,
+      message: formData.message,
+      timestamp: serverTimestamp()
+    })
+      .then(() => {
+        dispatch(closeSendMessage())
+      })
+      .catch(error => console.error('Erros adding document', error))
   }
 
   return (
