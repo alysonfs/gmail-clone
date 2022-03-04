@@ -1,10 +1,24 @@
 import React from 'react'
 import './Header.css'
-
 import { Apps, ArrowDropDown, MenuOutlined, Notifications, SearchOutlined } from '@mui/icons-material'
 import { Avatar, IconButton } from '@mui/material'
 
+import { useSelector, useDispatch } from 'react-redux'
+import { selectUser, logout } from '../../app/features/userSlice'
+import { auth } from '../../app/firebase'
+
+
 function Header () {
+  const user = useSelector(selectUser)
+  const dispatch = useDispatch()
+  const logoutApp = () => {
+    auth.signOut()
+      .then(() => {
+        dispatch(logout())
+      })
+      .catch(error => alert(error.message))
+  }
+
   return (
     <div className="header">
       <div className="header__left">
@@ -25,7 +39,8 @@ function Header () {
         <IconButton>
           <Notifications />
         </IconButton>
-        <Avatar />
+        <Avatar src={user ? user.photoUrl : user.displayName[0]}
+          onClick={logoutApp} />
       </div>
     </div>
   )
